@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
+using MirrorsProject.Units;
 
 namespace MirrorsProject.Clients
 {
@@ -24,6 +25,15 @@ namespace MirrorsProject.Clients
         /// </summary>
         [Tooltip ("Prefab for the player")]
         [SerializeField] NetworkIdentity playerPrefab;
+
+        /// <summary>
+        /// currently spawned character for the local player
+        /// </summary>
+        GameObject currentCharacter = null;
+        /// <summary>
+        /// the current name for the character
+        /// </summary>
+        string currentName = string.Empty;
         #endregion
 
         #region MEMBER METHODS
@@ -56,8 +66,27 @@ namespace MirrorsProject.Clients
         
         public void InvokeCharacterSpawned(GameObject go)
         {
-            Debug.Log("aaaaaaaaaaaaaaaaaaaaaaaa");
+            currentCharacter = go;
+            SetName(currentName);
             OnOwnerCharacterSpawned?.Invoke(go);
+        }
+
+        /// <summary>
+        /// set the player name for the local client
+        /// </summary>
+        /// <param name="name"></param>
+        public void SetName(string name)
+        {
+            currentName = name;
+            if (currentCharacter != null)
+            {
+                PlayerName pn = currentCharacter.GetComponent<PlayerName>();
+                pn.SetName(name);
+            }
+            else
+            {
+                return;
+            }
         }
         #endregion
 

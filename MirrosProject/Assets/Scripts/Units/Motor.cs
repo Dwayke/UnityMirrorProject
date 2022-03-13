@@ -23,6 +23,10 @@ namespace MirrorsProject.Units
         /// CharacterController Reference
         /// </summary>
         private CharacterController characterController = null;
+        /// <summary>
+        /// animator for this object
+        /// </summary>
+        Animator animator;
         #endregion
 
         #region ENGINE
@@ -46,6 +50,12 @@ namespace MirrorsProject.Units
             base.OnStartClient();
             characterController.enabled = base.hasAuthority;
         }
+
+        public override void OnStartAuthority()
+        {
+            base.OnStartAuthority();
+            animator = GetComponent<Animator>();
+        }
         #endregion
 
         #region LOCAL METHODS
@@ -59,6 +69,8 @@ namespace MirrorsProject.Units
 
             transform.Rotate(new Vector3(0f, rotation * Time.deltaTime * turnRate, 0f));
             characterController.Move(transform.TransformDirection(next));
+
+            animator.SetFloat("Forward", forward);
         }
         #endregion
     }
