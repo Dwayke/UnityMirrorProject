@@ -13,6 +13,7 @@ namespace MirrorsProject.Units
         /// </summary>
         [Tooltip("How quick it moves")]
         [SerializeField] float moveRate = 3f;
+        
         /// <summary>
         /// How quick it turns
         /// </summary>
@@ -23,6 +24,7 @@ namespace MirrorsProject.Units
         /// CharacterController Reference
         /// </summary>
         private CharacterController characterController = null;
+        
         /// <summary>
         /// animator for this object
         /// </summary>
