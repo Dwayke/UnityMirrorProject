@@ -63,16 +63,19 @@ namespace MirrorsProject.Units
         #region LOCAL METHODS
         private void Move()
         {
-            float forward = Input.GetAxisRaw("Vertical");
-            float rotation = Input.GetAxisRaw("Horizontal");
+            if (characterController != null||animator != null)
+            {
+                float forward = Input.GetAxisRaw("Vertical");
+                float rotation = Input.GetAxisRaw("Horizontal");
 
-            Vector3 next = new Vector3(0f, 0f, forward * Time.deltaTime * moveRate);
-            next += Physics.gravity * Time.deltaTime;
+                Vector3 next = new Vector3(0f, 0f, forward * Time.deltaTime * moveRate);
+                next += Physics.gravity * Time.deltaTime;
 
-            transform.Rotate(new Vector3(0f, rotation * Time.deltaTime * turnRate, 0f));
-            characterController.Move(transform.TransformDirection(next));
+                transform.Rotate(new Vector3(0f, rotation * Time.deltaTime * turnRate, 0f));
+                characterController.Move(transform.TransformDirection(next));
 
-            animator.SetFloat("Forward", forward);
+                animator.SetFloat("Forward", forward);
+            }
         }
         #endregion
     }

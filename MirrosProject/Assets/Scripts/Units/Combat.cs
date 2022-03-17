@@ -9,6 +9,7 @@ namespace MirrorsProject.Units
 {
     public class Combat : NetworkBehaviour
     {
+        #region VARS
         /// <summary>
         /// Visual Effects for the projectile
         /// </summary>
@@ -29,7 +30,9 @@ namespace MirrorsProject.Units
         NetworkAnimator networkAnimator;
         Collider[] colliders;
         HealthSystem healthSystem;
+        #endregion
 
+        #region ENGINE
         private void Awake()
         {
             networkAnimator = GetComponent<NetworkAnimator>();
@@ -43,7 +46,9 @@ namespace MirrorsProject.Units
                 CheckAttack();
             }
         }
+        #endregion
 
+        #region LOCAL METHODS
         /// <summary>
         /// checks if can attack
         /// </summary>
@@ -63,6 +68,11 @@ namespace MirrorsProject.Units
             CmdAttack(transform.position, transform.forward);
         }
 
+        /// <summary>
+        /// Fire Cooldown
+        /// </summary>
+        /// <param name="resetTime"></param>
+        /// <returns></returns>
         private bool FireTimeMet(bool resetTime=true)
         {
             bool result = (Time.time >=  nextAttack);
@@ -91,7 +101,6 @@ namespace MirrorsProject.Units
             {
                 StartCoroutine(SpawnProjectiles(pos, dir));
             }
-            StartCoroutine(SpawnProjectiles(pos, dir));
             RpcAttack(pos, dir);
         }
 
@@ -119,7 +128,7 @@ namespace MirrorsProject.Units
                 if (base.isServer)
                 {
                     HealthSystem target = hit.collider.transform.root.GetComponent<HealthSystem>();
-                    target.DealDamage(20f);
+                    target.DealDamage(20f, base.connectionToClient);
                 }
             }
             SetColliders(true);
@@ -151,7 +160,6 @@ namespace MirrorsProject.Units
                 }
             }
         }
-
-
+        #endregion
     }
 }

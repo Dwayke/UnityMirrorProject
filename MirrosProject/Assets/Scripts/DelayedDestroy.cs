@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class DelayedDestroy : MonoBehaviour
 {
+    #region VARS
     [SerializeField] private float delay = 1f;
 
     private float destroyTime = -1f;
+    #endregion
 
+    #region ENGINE
     private void Awake()
     {
         destroyTime = Time.time + delay;
@@ -20,4 +23,5 @@ public class DelayedDestroy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    #endregion
 }

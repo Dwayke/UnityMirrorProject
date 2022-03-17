@@ -12,6 +12,10 @@ using System.Collections.Generic;
 public class NewNetworkManager : NetworkManager
 {
     #region Public
+    public static event Action<NetworkConnection> Relay_OnServerAddPlayer;
+    public static event Action<NetworkConnection> Relay_OnServerDisconnect;
+    public static event Action Relay_OnClientStop;
+    public static event Action Relay_OnServerStop;
     /// <summary>
     /// List of spawned local players kept on the server side
     /// </summary>
@@ -160,10 +164,11 @@ public class NewNetworkManager : NetworkManager
 
         // instantiating a "Player" prefab gives it the name "Player(clone)"
         // => appending the connectionId is WAY more useful for debugging!
-        player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+        //player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
         LocalPlayers[conn] = player.GetComponent<NetworkIdentity>();
-        //NetworkServer.AddPlayerForConnection(conn, player);
+        NetworkServer.AddPlayerForConnection(conn, player);
         base.OnServerAddPlayer(conn);
+        Relay_OnServerAddPlayer?.Invoke(conn);
     }
 
     /// <summary>
@@ -173,6 +178,7 @@ public class NewNetworkManager : NetworkManager
     /// <param name="conn">Connection from client.</param>
     public override void OnServerDisconnect(NetworkConnection conn)
     {
+        Relay_OnServerDisconnect?.Invoke(conn);
         LocalPlayers.Remove(conn);
         base.OnServerDisconnect(conn);
     }
@@ -252,12 +258,18 @@ public class NewNetworkManager : NetworkManager
     /// <summary>
     /// This is called when a server is stopped - including when a host is stopped.
     /// </summary>
-    public override void OnStopServer() { }
+    public override void OnStopServer() 
+    {
+        Relay_OnServerStop?.Invoke();
+    }
 
     /// <summary>
     /// This is called when a client is stopped.
     /// </summary>
-    public override void OnStopClient() { }
+    public override void OnStopClient() 
+    {
+        Relay_OnClientStop?.Invoke();
+    }
 
     #endregion
 }

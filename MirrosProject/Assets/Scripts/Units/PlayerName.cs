@@ -8,10 +8,12 @@ namespace MirrorsProject.Units
 {
     public class PlayerName : NetworkBehaviour
     {
+        #region VARS
         [SyncVar(hook = nameof(OnNameUpdated))] string syncName = string.Empty;
         [SerializeField] TextMeshProUGUI text;
+        #endregion
 
-
+        #region MEMBER METHODS
         /// <summary>
         /// sets the playe name for owner
         /// </summary>
@@ -26,7 +28,9 @@ namespace MirrorsProject.Units
             OnNameUpdated(string.Empty, name);
             CmdSetName(name);
         }
+        #endregion
 
+        #region LOCAL METHODS
         /// <summary>
         /// sets the name for this character
         /// </summary>
@@ -43,5 +47,6 @@ namespace MirrorsProject.Units
         {
             text.text = next;
         }
+        #endregion
     }
 }

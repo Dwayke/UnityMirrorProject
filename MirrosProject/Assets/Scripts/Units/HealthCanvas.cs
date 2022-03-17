@@ -11,32 +11,35 @@ namespace MirrorsProject.Units
 {
     public class HealthCanvas : NetworkBehaviour
     {
+        #region VARS
         [SerializeField] Image healthImage;
         HealthSystem healthSystem;
+        #endregion
 
-
-
+        #region ENGINE
         private void Awake()
         {
-            ClientInstance.OnOwnerCharacterSpawned += ClientInstance_OnOwnerCharacterSpawned;
+            Respawner.OnOwnerCharacterSpawned += ClientInstance_OnOwnerCharacterSpawned;
         }
 
         private void OnDestroy()
         {
-            ClientInstance.OnOwnerCharacterSpawned -= ClientInstance_OnOwnerCharacterSpawned;
+            Respawner.OnOwnerCharacterSpawned -= ClientInstance_OnOwnerCharacterSpawned;
         }
 
+        private void Update()
+        {
+            UpdateHealthImage();
+        }
+        #endregion
+
+        #region LOCAL METHODS
         private void ClientInstance_OnOwnerCharacterSpawned(GameObject obj)
         {
             if (obj != null)
             {
                 healthSystem = obj.GetComponent<HealthSystem>();
             }
-        }
-
-        private void Update()
-        {
-            UpdateHealthImage();
         }
 
         private void UpdateHealthImage()
@@ -51,5 +54,6 @@ namespace MirrorsProject.Units
                 healthImage.fillAmount = percentage;
             }
         }
+        #endregion
     }
 }

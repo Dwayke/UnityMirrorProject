@@ -24,12 +24,12 @@ namespace MirrorsProject.Clients
         #region ENGINE
         private void Awake()
         {
-            ClientInstance.OnOwnerCharacterSpawned += ClientInstance_OnOwnerCharacterSpawned;
+            Respawner.OnOwnerCharacterSpawned += ClientInstance_OnOwnerCharacterSpawned;
         }
 
         private void OnDestroy()
         {
-            ClientInstance.OnOwnerCharacterSpawned -= ClientInstance_OnOwnerCharacterSpawned;
+            Respawner.OnOwnerCharacterSpawned -= ClientInstance_OnOwnerCharacterSpawned;
         }
 
         private void Update()

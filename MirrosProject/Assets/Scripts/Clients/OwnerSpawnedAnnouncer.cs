@@ -19,7 +19,8 @@ namespace MirrorsProject.Clients
         private void AnnounceSpawned()
         {
             ClientInstance ci = ClientInstance.ReturnClientInstance();
-            ci.InvokeCharacterSpawned(gameObject);
+            Respawner r = ci.GetComponent<Respawner>();
+            r.InvokeCharacterSpawned(gameObject);
         }
         #endregion
     }
